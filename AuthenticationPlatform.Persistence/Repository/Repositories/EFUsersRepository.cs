@@ -8,9 +8,9 @@ namespace AuthenticationPlatform.Persistence.Repository.Repositories;
 
 public class EFUsersRepository : IUsersRepository
 {
-    private readonly AppDbContext _context;
+    private readonly UserDbContext _context;
     private readonly IMapper _mapper;
-    public EFUsersRepository(IMapper mapper, AppDbContext context)
+    public EFUsersRepository(IMapper mapper, UserDbContext context)
     {
         _mapper = mapper;
         _context = context;

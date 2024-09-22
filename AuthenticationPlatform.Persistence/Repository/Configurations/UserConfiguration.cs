@@ -8,8 +8,9 @@ public class UserConfiguration : IEntityTypeConfiguration<UserEntity>
 {
     public void Configure(EntityTypeBuilder<UserEntity> builder)
     {
+        builder.HasKey(u => u.Id);
+
         builder.Property(u => u.Id)
-            .ValueGeneratedOnAdd()
             .IsRequired();
 
         builder.Property(u => u.Email)

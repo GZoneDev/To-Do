@@ -4,11 +4,11 @@ using AuthenticationPlatform.Persistence.Repository.Entitys;
 
 namespace AuthenticationPlatform.Persistence.Repository;
 
-public class AppDbContext : DbContext
+public class UserDbContext : DbContext
 {
     public DbSet<UserEntity> Users { get; set; }
 
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    public UserDbContext(DbContextOptions<UserDbContext> options) : base(options)
     {
     }
 

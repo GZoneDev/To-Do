@@ -22,7 +22,7 @@ builder.Services.AddScoped<ITokenProvider, JwtPovider>();
 
 builder.Services.AddScoped<UserAuthorizationService>();
 
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContext<UserDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DBConnection")));
 
 builder.Services.AddAutoMapper(typeof(UserMappingProfile));
