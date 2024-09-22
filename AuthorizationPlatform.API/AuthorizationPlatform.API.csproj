@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>c910e4a4-ff19-4be7-9529-e53259b94630</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AuthenticationPlatform.Application\AuthenticationPlatform.Application.csproj" />
+    <ProjectReference Include="..\AuthenticationPlatform.Core\AuthenticationPlatform.Core.csproj" />
+    <ProjectReference Include="..\AuthenticationPlatform.Infrastructure\AuthenticationPlatform.Infrastructure.csproj" />
+    <ProjectReference Include="..\AuthenticationPlatform.Persistence\AuthenticationPlatform.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>
