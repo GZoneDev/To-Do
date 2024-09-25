@@ -64,12 +64,6 @@ public class UserAuthorizationService
 
     public async Task<Result<string>> LoginAsync(string email, string password)
     {
-        if (string.IsNullOrWhiteSpace(email))
-            return Result<string>.Failure("Email cannot be empty.");
-
-        if (string.IsNullOrWhiteSpace(password))
-            return Result<string>.Failure("Password cannot be empty.");
-
         var user = await _usersRepository.GetByEmailAsync(email);
 
         if (user is null)

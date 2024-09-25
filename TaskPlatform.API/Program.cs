@@ -34,10 +34,7 @@ var app = builder.Build();
 app.UseMiddleware<AuthMiddleware>();
 
 app.UseRouting();
-//app.UseEndpoints(endpoints =>
-//{
-//    endpoints.MapControllers();
-//});
+
 
 if (app.Environment.IsDevelopment())
 {
