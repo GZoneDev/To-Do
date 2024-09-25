@@ -2,6 +2,8 @@
 using AuthenticationPlatform.Application.Interfaces.Auth;
 using AuthenticationPlatform.Application.Interfaces.Repositories;
 using AuthenticationPlatform.Application.Common;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace AuthenticationPlatform.Application.Services;
 
@@ -16,22 +18,13 @@ public class UserAuthorizationService
         IPasswordHasher passwordHasher,
         ITokenProvider tokenProvider)
     {
-        _usersRepository = usersRepository ?? throw new ArgumentNullException(nameof(usersRepository));
-        _passwordHasher = passwordHasher ?? throw new ArgumentNullException(nameof(passwordHasher));
-        _tokenProvider = tokenProvider ?? throw new ArgumentNullException(nameof(tokenProvider));
+        _usersRepository = usersRepository;
+        _passwordHasher = passwordHasher;
+        _tokenProvider = tokenProvider;
     }
 
     public async Task<Result<string>> RegisterAsync(string userName, string email, string password)
     {
-        if (string.IsNullOrWhiteSpace(userName))
-            return Result<string>.Failure("Username cannot be empty.");
-
-        if (string.IsNullOrWhiteSpace(email))
-            return Result<string>.Failure("Email cannot be empty.");
-
-        if (string.IsNullOrWhiteSpace(password))
-            return Result<string>.Failure("Password cannot be empty.");
-
         var existingUser = await _usersRepository.GetByEmailAsync(email);
 
         if (existingUser is not null)
@@ -45,6 +38,28 @@ public class UserAuthorizationService
         await _usersRepository.AddAsync(newUser);
 
         return Result<string>.Success("Registration completed successfully.");
+    }
+
+    private Result<string> UserValidate(User user)
+    {
+        var validationResults = new List<ValidationResult>();
+        var context = new ValidationContext(user);
+
+        bool isValid = Validator.TryValidateObject(user, context, validationResults, true);
+
+        if (!isValid)
+        {
+            StringBuilder errors = new StringBuilder();
+
+            foreach (var error in validationResults)
+            {
+                errors.AppendLine($"{error.ErrorMessage}\n");
+            }
+
+            return Result<string>.Failure(errors.ToString());
+        }
+
+        return Result<string>.Success(string.Empty);
     }
 
     public async Task<Result<string>> LoginAsync(string email, string password)

@@ -7,9 +7,11 @@ using AuthenticationPlatform.Application.Interfaces.Auth;
 using AuthenticationPlatform.Application.Services;
 using AuthenticationPlatform.Infrastructure.Common;
 using AuthorizationPlatform.API.Extensions;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.CookiePolicy;
+using FluentValidation.AspNetCore;
+using AuthorizationPlatform.API.Validations.Contracts.Users;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +33,11 @@ builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(nameof(J
 builder.Services.AddApiAuthentication(builder.Services.BuildServiceProvider().GetRequiredService<IOptions<JwtOptions>>());
 
 builder.Services.AddControllers();
+
+builder.Services.AddFluentValidationAutoValidation()
+                .AddFluentValidationClientsideAdapters();
+
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

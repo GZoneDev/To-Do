@@ -1,12 +1,12 @@
 ﻿namespace TaskPlatform.Core.Models;
 
-public class Task
+public class TaskInfo
 {
     public Guid Id { get; set; }
     public Guid CategoryId { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
-    private Task(Guid id, Guid categoryId, string name, string description)
+    private TaskInfo(Guid id, Guid categoryId, string name, string description)
     {
         Id = id;
         CategoryId = categoryId;
@@ -14,8 +14,8 @@ public class Task
         Description = description;
     }
 
-    public static Task Create(Guid id, Guid categoryId, string name, string description)
+    public static TaskInfo Create(Guid id, Guid categoryId, string name, string description)
     {
-        return new Task(id, categoryId, name, description);
+        return new TaskInfo(id, categoryId, name, description);
     }
 }

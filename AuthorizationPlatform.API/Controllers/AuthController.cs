@@ -23,6 +23,11 @@ namespace AuthorizationPlatform.API.Controllers
             [FromBody] RegisterUserRequest registerUserRequest,
             [FromServices] UserAuthorizationService userAuthorizationService)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var result = await userAuthorizationService.RegisterAsync(
                                 registerUserRequest.UserName,
                                 registerUserRequest.Email,
@@ -37,6 +42,11 @@ namespace AuthorizationPlatform.API.Controllers
             [FromBody] LoginUserRequest loginUserRequest,
             [FromServices] UserAuthorizationService userAuthorizationService)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var result = await userAuthorizationService.LoginAsync(
                 loginUserRequest.Email,
                 loginUserRequest.Password);
@@ -51,8 +61,8 @@ namespace AuthorizationPlatform.API.Controllers
         }
 
         [Authorize]
-        [HttpPost("authentication")]
-        public async Task<IActionResult> Authentication()
+        [HttpGet("authentication")]
+        public IActionResult Authentication()
         {
             return Ok();
         }
