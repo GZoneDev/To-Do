@@ -6,11 +6,15 @@ using TaskPlatform.Application.Interfaces.Repositories;
 using TaskPlatform.Persistence.Common.Mappings;
 using TaskPlatform.Persistence.Repository;
 using TaskPlatform.Persistence.Repository.Repositories;
+using TaskPlatform.Application.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<ICategoryRepository, EFCategoryRepository>();
 builder.Services.AddScoped<ITaskInfoRepository, EFTaskInfoRepository>();
+
+builder.Services.AddScoped<TaskInfoService>();
+builder.Services.AddScoped<CategoryService>();
 
 builder.Services.AddDbContext<TaskDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DBConnection")));
@@ -31,10 +35,13 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseMiddleware<AuthMiddleware>();
+//app.UseMiddleware<AuthMiddleware>();
 
 app.UseRouting();
-
+//app.UseEndpoints(endpoints =>
+//{
+//    endpoints.MapControllers();
+//});
 
 if (app.Environment.IsDevelopment())
 {

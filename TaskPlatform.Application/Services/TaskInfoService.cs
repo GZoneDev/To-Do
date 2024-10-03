@@ -21,7 +21,7 @@ public class TaskInfoService
 
     public async Task UpdateTaskInfoAsync(Guid taskInfoId, Guid categoryId, string name, string description)
     {
-        var taskInfo = TaskInfo.Create(Guid.NewGuid(), categoryId, name, description);
+        var taskInfo = TaskInfo.Create(taskInfoId, categoryId, name, description);
 
         await _taskInfoRepository.UpdateAsync(taskInfo);
     }

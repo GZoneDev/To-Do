@@ -57,19 +57,38 @@ public class CategoryController : ControllerBase
     }
 
     [HttpGet("Get")]
-    public IActionResult Get(
-    [FromBody] GetCategoryRequest getCategoryRequest,
-    [FromServices] CategoryService categoryService)
+    public async Task<IActionResult> Get(
+        [FromQuery] GetCategoryRequest getCategoryRequest,
+        [FromServices] CategoryService categoryService)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
-        var result = categoryService.GetListByUserAsync(
+        var result = await categoryService.GetListByUserAsync(
             getCategoryRequest.UserId,
             getCategoryRequest.Index,
             getCategoryRequest.Number);
+
+        return Ok(result);
+    }
+
+    [HttpGet("GetByName")]
+    public async Task<IActionResult> GetByName(
+        [FromQuery] GetCategoryByNameRequest getCategoryRequest,
+        [FromServices] CategoryService categoryService)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        var result = await categoryService.GetListByUserAndCategoryNameAsync(
+           getCategoryRequest.UserId,
+           getCategoryRequest.CategoryName,
+           getCategoryRequest.Index,
+           getCategoryRequest.Number);
 
         return Ok(result);
     }

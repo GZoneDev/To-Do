@@ -82,4 +82,25 @@ public class UserAuthorizationService
 
         return Result<string>.Success(token);
     }
+
+    public async Task<Result<string[]>> LoginAsyncWithUser(string email, string password)
+    {
+        var user = await _usersRepository.GetByEmailAsync(email);
+
+        if (user is null)
+        {
+            return Result<string[]>.Failure("User with this email does not exist.", System.Net.HttpStatusCode.NotFound);
+        }
+
+        var isPasswordValid = _passwordHasher.Verify(password, user.PasswordHash);
+
+        if (!isPasswordValid)
+        {
+            return Result<string[]>.Failure("Invalid password.", System.Net.HttpStatusCode.Unauthorized);
+        }
+
+        var token = _tokenProvider.GenerateToken(user);
+
+        return Result<string[]>.Success(new[] { token, user.Id.ToString() });
+    }
 }

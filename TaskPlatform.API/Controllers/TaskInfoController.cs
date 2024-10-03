@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TaskPlatform.API.Contracts.Categories;
 using TaskPlatform.API.Contracts.TaskInfos;
 using TaskPlatform.Application.Services;
 
@@ -63,7 +62,7 @@ namespace TaskPlatform.API.Controllers
 
         [HttpGet("Get")]
         public async Task<IActionResult> Get(
-        [FromBody] GetTaskInfoRequest getTaskInfoRequest,
+        [FromQuery] GetTaskInfoRequest getTaskInfoRequest,
         [FromServices] TaskInfoService taskInfoService)
         {
             if (!ModelState.IsValid)

@@ -45,14 +45,29 @@ public class EFCategoryRepository : ICategoryRepository
     public async Task<Category[]> GetListByUserAsync(Guid userId, int index, int number)
     {
         var categorieEntities = await _context.Categories
-            .Where(c => c.UserId == userId)       
-            .OrderBy(c => c.Name)                 
-            .Skip(index * number)                 
-            .Take(number)                         
+            .Where(c => c.UserId == userId)
+            .OrderBy(c => c.Name)
+            .Skip(index * number)
+            .Take(number)
             .ToArrayAsync();
 
         var categories = _mapper.Map<Category[]>(categorieEntities);
 
         return categories;                        
+    }
+
+    public async Task<Category[]> GetListByUserAndCategoryNameAsync(Guid userId, string categoryName, int index, int number)
+    {
+        var categorieEntities = await _context.Categories
+            .Where(c => c.UserId == userId)
+            .Where(c => c.Name.Contains(categoryName))
+            .OrderBy(c => c.Name)
+            .Skip(index * number)
+            .Take(number)
+            .ToArrayAsync();
+
+        var categories = _mapper.Map<Category[]>(categorieEntities);
+
+        return categories;
     }
 }

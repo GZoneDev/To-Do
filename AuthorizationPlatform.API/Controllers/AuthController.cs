@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using AuthenticationPlatform.Application.Services;
 using AuthorizationPlatform.API.Contracts.Users;
 using Microsoft.AspNetCore.Authorization;
+using AuthenticationPlatform.Application.Common;
 
 namespace AuthorizationPlatform.API.Controllers
 {
@@ -33,7 +34,7 @@ namespace AuthorizationPlatform.API.Controllers
                                 registerUserRequest.Email,
                                 registerUserRequest.Password);
 
-            return result.IsSuccess ? Ok(result.Value) : StatusCode((int)result.StatusCode, result.ErrorMessage);
+            return result.IsSuccess ? Ok(new { message = result.Value }) : StatusCode((int)result.StatusCode, result.ErrorMessage);
         }
 
         
@@ -46,18 +47,37 @@ namespace AuthorizationPlatform.API.Controllers
             {
                 return BadRequest(ModelState);
             }
+            
+            //var result = await userAuthorizationService.LoginAsync(
+            //    loginUserRequest.Email,
+            //    loginUserRequest.Password);
 
-            var result = await userAuthorizationService.LoginAsync(
+            //if (result.IsSuccess)
+            //{
+            //    HttpContext.Response.Cookies.Append("token", result.Value);
+            //    return Ok();
+            //}          
+
+            //return StatusCode((int)result.StatusCode, result.ErrorMessage);
+
+            var result = await userAuthorizationService.LoginAsyncWithUser(
                 loginUserRequest.Email,
                 loginUserRequest.Password);
 
             if (result.IsSuccess)
             {
-                HttpContext.Response.Cookies.Append("token", result.Value);
-                return Ok();
-            }          
-
+                HttpContext.Response.Cookies.Append("token", result.Value[0]);
+                return Ok(new { message = result.Value[1] });
+            }
             return StatusCode((int)result.StatusCode, result.ErrorMessage);
+        }
+
+        [Authorize]
+        [HttpGet("logout")]
+        public IActionResult Logout()
+        {
+            HttpContext.Response.Cookies.Delete("token");
+            return Ok(new { message = "Logout successful." });
         }
 
         [Authorize]

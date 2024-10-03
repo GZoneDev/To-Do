@@ -35,4 +35,9 @@ public class CategoryService
     {
         return await _categoryRepository.GetListByUserAsync(userId, index, number);
     }
+
+    public async Task<Category[]> GetListByUserAndCategoryNameAsync(Guid userId, string categoryName, int index, int number)
+    {
+        return await _categoryRepository.GetListByUserAndCategoryNameAsync(userId, categoryName, index, number);
+    }
 }
